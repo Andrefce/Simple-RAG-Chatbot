@@ -212,6 +212,7 @@ class StreamlitApp:
             st.chat_message("user").markdown(prompt)
             st.session_state.messages.append({'role': 'user', 'content': prompt})
 
+<<<<<<< HEAD
             # Use the QA system from session state for consistency
             qa_system = st.session_state.qa_system
             
@@ -221,10 +222,18 @@ class StreamlitApp:
             else:
                 with st.spinner("Analyzing your question..."):
                     response = qa_system.get_answer(prompt)
+=======
+        # Verifica se um arquivo PDF foi carregado
+        if not self.qa_system:
+            response = "No document has been uploaded. Please upload a PDF first."
+        else:
+            with st.spinner("Analyzing your question..."):
+                response = self.qa_system.get_answer(prompt)
+>>>>>>> ea4927182410be5c59d6d54c32afdad0afc70ed9
 
-            with st.chat_message("assistant"):
-                st.markdown(response)
-            st.session_state.messages.append({'role': 'assistant', 'content': response})
+        with st.chat_message("assistant"):
+            st.markdown(response)
+        st.session_state.messages.append({'role': 'assistant', 'content': response})
 
     def __del__(self):
         """Clean up temporary files when the app is closed."""
