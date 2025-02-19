@@ -129,17 +129,21 @@ class StreamlitApp:
                 st.markdown(message['content'])
 
     def _handle_user_input(self):
-        """Handle user input and generate responses."""
+    """Handle user input and generate responses."""
         if prompt := st.chat_input("Ask a question about the document..."):
             st.chat_message("user").markdown(prompt)
             st.session_state.messages.append({'role': 'user', 'content': prompt})
 
+        # Verifica se um arquivo PDF foi carregado
+        if not self.qa_system:
+            response = "No document has been uploaded. Please upload a PDF first."
+        else:
             with st.spinner("Analyzing your question..."):
                 response = self.qa_system.get_answer(prompt)
 
-            with st.chat_message("assistant"):
-                st.markdown(response)
-            st.session_state.messages.append({'role': 'assistant', 'content': response})
+        with st.chat_message("assistant"):
+            st.markdown(response)
+        st.session_state.messages.append({'role': 'assistant', 'content': response})
 
 if __name__ == "__main__":
     app = StreamlitApp()
